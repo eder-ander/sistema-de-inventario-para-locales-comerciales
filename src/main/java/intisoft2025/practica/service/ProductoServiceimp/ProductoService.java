@@ -21,10 +21,7 @@ public class ProductoService implements IProductoService {
         return productoRepository.save(producto);
     }
 
-    @Override
-    public void eliminarProducto(Long id){
-        productoRepository.deleteById(id);
-    }
+
 
     @Override
     public Producto actualizarProducto(Long id, Producto producto){

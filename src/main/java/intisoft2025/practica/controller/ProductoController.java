@@ -47,23 +47,7 @@ public class ProductoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201 retorna ahi
     }
 
-    /**
-     * Elimina un producto por su ID.
-     * Si no existe, lanza ResourceNotFoundException capturada como 404.
-     * 
-     * @param id Identificador del producto.
-     * @return ResponseEntity con ApiResponse de exito.
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RespuestaApi<Void>> delete(@PathVariable Long id) {
-        Producto productoBuscar = productoService.buscarProducto(id);
-        if (productoBuscar == null) {
-            throw new ResourceNotFoundException("No se encontro el producto con ID: " + id);
-        }
-        productoService.eliminarProducto(id);
-        RespuestaApi<Void> response = new RespuestaApi<>(true, "Producto eliminado con exito", null);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+
 
     /**
      * Actualiza un producto existente.

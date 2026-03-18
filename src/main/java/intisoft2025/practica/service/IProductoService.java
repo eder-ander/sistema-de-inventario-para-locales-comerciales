@@ -7,7 +7,7 @@ import java.util.List;
 public interface IProductoService {
     Producto guardarProducto(Producto producto);
 
-    void eliminarProducto(Long id);
+
 
     Producto actualizarProducto(Long id, Producto producto);
 
