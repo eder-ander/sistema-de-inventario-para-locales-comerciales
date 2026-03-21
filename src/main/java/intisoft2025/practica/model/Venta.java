@@ -26,6 +26,11 @@ public class Venta {
         this.fecha = Instant.now();
     }
 
+    public void añadirDetalleVenta(DetalleVenta detalleVenta){
+        this.detalleVentas.add(detalleVenta);
+        detalleVenta.setVenta(this);
+    }
+
     public Venta(){}
 
     public Long getId() {
