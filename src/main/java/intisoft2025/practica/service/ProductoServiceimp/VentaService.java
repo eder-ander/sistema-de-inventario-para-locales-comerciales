@@ -16,11 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class VentaService implements IVentaService {
 
-    @Autowired
-    private VentaRepository ventaRepository;
-
-    @Autowired
     private ProductoRepository productoRepository;
+    private VentaRepository ventaRepository;
+    public VentaService(ProductoRepository productoRepository, VentaRepository ventaRepository){
+        this.productoRepository = productoRepository;
+        this.ventaRepository = ventaRepository;
+    }
 
     @Override
     public Venta crearVenta(VentaRequestDTO productosDto) {
