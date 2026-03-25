@@ -24,7 +24,7 @@ public class Producto {
     private Integer cantidad;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("producto-detalle")
     List<DetalleVenta> detalleVentas = new ArrayList<>();
 
     public Producto(String nombre, int precio, int cantidad) {

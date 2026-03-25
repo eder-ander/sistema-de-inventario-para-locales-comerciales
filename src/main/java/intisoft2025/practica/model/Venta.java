@@ -18,7 +18,7 @@ public class Venta {
     private Instant fecha;
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("venta-detalle")
     List<DetalleVenta> detalleVentas = new ArrayList<>();
 
     @PrePersist
