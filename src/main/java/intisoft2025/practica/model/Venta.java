@@ -1,5 +1,6 @@
 package intisoft2025.practica.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -15,6 +16,10 @@ public class Venta {
     private Long id;
 
     @Column(nullable = false, updatable = false)
+    @JsonFormat(
+            pattern = "yyyy-MM-dd HH:mm:ss",
+            timezone = "UTC"
+    )
     private Instant fecha;
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
