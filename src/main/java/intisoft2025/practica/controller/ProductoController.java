@@ -1,5 +1,6 @@
 package intisoft2025.practica.controller;
 
+import intisoft2025.practica.dto.RequestProductoDto;
 import intisoft2025.practica.dto.RespuestaApi;
 import intisoft2025.practica.exception.BadRequestException;
 import intisoft2025.practica.exception.ResourceNotFoundException;
@@ -74,9 +75,20 @@ public class ProductoController {
      * @return ResponseEntity con ApiResponse conteniendo la lista de productos.
      */
     @GetMapping
-    public ResponseEntity<RespuestaApi<List<Producto>>> lista() {
-        List<Producto> lista = productoService.listarProductos();
-        RespuestaApi<List<Producto>> response = new RespuestaApi<>(true, "Lista de productos obtenida con exito", lista);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<RespuestaApi<List<RequestProductoDto>>> lista() {
+        List<Producto> productos = productoService.listarProductos();
+
+        List<RequestProductoDto> dto = productos.stream().map( x -> {
+            RequestProductoDto requestProductoDto = new RequestProductoDto();
+
+            requestProductoDto.setId(x.getId());
+            requestProductoDto.setNombre(x.getNombre());
+            requestProductoDto.setPrecio(x.getPrecio());
+            requestProductoDto.setCantidad(x.getCantidad());
+            return requestProductoDto;
+            }).toList();
+
+        RespuestaApi<List<RequestProductoDto>> api = new RespuestaApi<>(true, "lista de productos", dto);
+        return ResponseEntity.ok(api);
     }
 }
