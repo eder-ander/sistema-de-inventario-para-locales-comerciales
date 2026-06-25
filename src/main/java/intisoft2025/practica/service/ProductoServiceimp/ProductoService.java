@@ -41,6 +41,8 @@ public class ProductoService implements IProductoService {
     public Producto actualizarProducto(Long id, Producto producto){
         Producto productoBuscar = buscarProducto(id);
 
+        if(productoBuscar == null) return null;
+
         productoBuscar.setPrecio(producto.getPrecio());
         productoBuscar.setNombre(producto.getNombre());
         productoBuscar.setCantidad(producto.getCantidad());
