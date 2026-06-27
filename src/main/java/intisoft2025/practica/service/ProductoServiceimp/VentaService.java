@@ -18,6 +18,12 @@ public class VentaService implements IVentaService {
 
     private ProductoRepository productoRepository;
     private VentaRepository ventaRepository;
+
+    /**
+     * Inyeccion de dependecias para producto_repository y venta_repository
+     * @param productoRepository
+     * @param ventaRepository
+     */
     public VentaService(ProductoRepository productoRepository, VentaRepository ventaRepository){
         this.productoRepository = productoRepository;
         this.ventaRepository = ventaRepository;
@@ -35,8 +41,7 @@ public class VentaService implements IVentaService {
 
                 // Buscamos el producto
                 Producto producto = productoRepository.findById(item.getProductoId())
-                        .orElseThrow(() -> new RuntimeException(
-                                "Producto con ID " + item.getProductoId() + " no encontrado"));
+                        .orElseThrow(() -> new RuntimeException("Producto con ID " + item.getProductoId() + " no encontrado"));
 
                 // Validamos stock
                 if (producto.getCantidad() < item.getCantidad()) {
