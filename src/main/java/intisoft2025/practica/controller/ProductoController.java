@@ -37,9 +37,9 @@ public class ProductoController {
      */
     @PostMapping
     public ResponseEntity<RespuestaApi<Producto>> save(@RequestBody Producto producto) {
-        if (producto.getNombre() == null || producto.getNombre().isEmpty() || producto.getCantidad() == null
+        if (producto.getNombre() == null || producto.getNombre().isEmpty() || producto.getCantidad() == null ||producto.getPrecio() < 0
                 || producto.getCantidad() < 0) {
-            throw new BadRequestException("El nombre es obligatorio y la cantidad debe ser mayor o igual a 0");
+            throw new BadRequestException("El nombre es obligatorio, la cantidad y precio debe ser mayor o igual a 0");
         }
 
         Producto productoSave = productoService.guardarProducto(producto);
