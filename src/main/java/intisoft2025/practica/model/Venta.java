@@ -1,5 +1,6 @@
 package intisoft2025.practica.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -25,6 +26,11 @@ public class Venta {
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
     @JsonManagedReference("venta-detalle")
     List<DetalleVenta> detalleVentas = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "empleado_id", nullable = false)
+    @JsonBackReference("empleado_venta")
+    private Empleado empleado;
 
     @PrePersist
     protected void onCreated(){
