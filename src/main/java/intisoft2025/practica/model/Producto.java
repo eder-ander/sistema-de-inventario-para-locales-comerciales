@@ -1,11 +1,16 @@
 package intisoft2025.practica.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "productos")
 public class Producto {
@@ -27,6 +32,11 @@ public class Producto {
     @JsonManagedReference("producto-detalle")
     List<DetalleVenta> detalleVentas = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "id_empresa", nullable = false)
+    @JsonBackReference("empresa_producto")
+    private Empresa empresa;
+
     public Producto(String nombre, int precio, int cantidad) {
         this.nombre = nombre;
         this.precio = precio;
@@ -36,45 +46,6 @@ public class Producto {
     public Producto() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Integer getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Integer precio) {
-        this.precio = precio;
-    }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public List<DetalleVenta> getDetalleVentas() {
-        return detalleVentas;
-    }
-
-    public void setDetalleVentas(List<DetalleVenta> detalleVentas) {
-        this.detalleVentas = detalleVentas;
-    }
 
     @Override
     public String toString() {
