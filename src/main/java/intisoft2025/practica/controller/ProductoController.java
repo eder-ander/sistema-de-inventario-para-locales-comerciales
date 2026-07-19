@@ -38,11 +38,11 @@ public class ProductoController {
     @PostMapping
     public ResponseEntity<RespuestaApi<Producto>> save(@RequestBody Producto producto) {
         if (producto.getNombre() == null || producto.getNombre().isEmpty() || producto.getCantidad() == null ||producto.getPrecio() < 0
-                || producto.getCantidad() < 0) {
-            throw new BadRequestException("El nombre es obligatorio, la cantidad y precio debe ser mayor o igual a 0");
+                || producto.getCantidad() < 0 || producto.getEmpresa().getId() == null) {
+            throw new BadRequestException("El nombre es obligatorio, la cantidad y precio debe ser mayor o igual a 0, el id de empresa es obligatorio");
         }
 
-        Producto productoSave = productoService.guardarProducto(producto);
+        Producto productoSave = productoService.guardarProducto(producto, producto.getEmpresa().getId());
 
         RespuestaApi<Producto> response = new RespuestaApi<>(true, "Producto creado con exito", productoSave);
         return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201 retorna ahi
@@ -57,14 +57,13 @@ public class ProductoController {
      * @param producto Nuevos datos del producto.
      * @return ResponseEntity con ApiResponse conteniendo el producto actualizado.
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<RespuestaApi<Producto>> actualizarProducto(@PathVariable Long id,
-            @RequestBody Producto producto) {
-        Producto buscarProducto = productoService.buscarProducto(id);
+    @PutMapping("/{id}/{id_empresa}")
+    public ResponseEntity<RespuestaApi<Producto>> actualizarProducto(@PathVariable Long id_empresa, @PathVariable Long id,@RequestBody Producto producto) {
+        Producto buscarProducto = productoService.buscarProducto(id_empresa,id);
         if (buscarProducto == null) {
             throw new ResourceNotFoundException("No se encontro el producto con ID: " + id);
         }
-        Producto nuevoProducto = productoService.actualizarProducto(id, producto);
+        Producto nuevoProducto = productoService.actualizarProducto(id_empresa, id, producto);
         RespuestaApi<Producto> response = new RespuestaApi<>(true, "Producto actualizado con exito", nuevoProducto);
         return ResponseEntity.ok(response);
     }
@@ -74,17 +73,21 @@ public class ProductoController {
      * 
      * @return ResponseEntity con ApiResponse conteniendo la lista de productos.
      */
-    @GetMapping
-    public ResponseEntity<RespuestaApi<List<RequestProductoDto>>> lista() {
-        List<Producto> productos = productoService.listarProductos();
+    @GetMapping("/{id_empresa}")
+    public ResponseEntity<RespuestaApi<List<RequestProductoDto>>> lista(@PathVariable Long id_empresa) {
+        List<Producto> productos = productoService.listarProductos(id_empresa);
 
-        List<RequestProductoDto> dto = productos.stream().map( x -> {
+        List<RequestProductoDto> dto =
+                productos
+                        .stream()
+                        .map( x -> {
             RequestProductoDto requestProductoDto = new RequestProductoDto();
 
             requestProductoDto.setId(x.getId());
             requestProductoDto.setNombre(x.getNombre());
             requestProductoDto.setPrecio(x.getPrecio());
             requestProductoDto.setCantidad(x.getCantidad());
+            requestProductoDto.setNombre_empresa(x.getEmpresa().getNombre());
             return requestProductoDto;
             }).toList();
 
