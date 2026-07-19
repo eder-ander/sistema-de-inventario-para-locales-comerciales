@@ -5,6 +5,7 @@ public class RequestProductoDto {
     private String nombre;
     private Integer precio;
     private Integer cantidad;
+    private String nombre_empresa;
 
     public RequestProductoDto(){
 
@@ -40,5 +41,13 @@ public class RequestProductoDto {
 
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public String getNombre_empresa() {
+        return nombre_empresa;
+    }
+
+    public void setNombre_empresa(String nombre_empresa) {
+        this.nombre_empresa = nombre_empresa;
     }
 }
