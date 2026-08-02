@@ -8,10 +8,7 @@ import intisoft2025.practica.model.Venta;
 import intisoft2025.practica.service.IVentaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/ventas")
@@ -30,12 +27,11 @@ public class VentaController {
      * @param solicitud DTO con la lista de productos y cantidades.
      * @return ResponseEntity con la venta creada.
      */
-    @PostMapping
-    public ResponseEntity<RespuestaApi<Venta>> crearVenta(@RequestBody VentaRequestDTO solicitud) {
+    @PostMapping("/{id_empresa}")
+    public ResponseEntity<RespuestaApi<Venta>> crearVenta(@PathVariable Long id_empresa, @RequestBody VentaRequestDTO solicitud) {
         if(solicitud == null || solicitud.getProductos() == null || solicitud.getProductos().isEmpty()){
-            throw new BadRequestException("Los productos deben de ser existentes");
+            throw new BadRequestException("Debe de aver productos existentes.");
         }
-
         for (DetalleRequestDTO id: solicitud.getProductos()){
             if (id.getProductoId() == null || id.getProductoId() <= 0){
                 throw new BadRequestException("Debe de aver un id valido");
@@ -44,8 +40,7 @@ public class VentaController {
                 throw new BadRequestException("Debe de ingresar una cantidad valida >= 1");
             }
         }
-
-        Venta venta = iVentaService.crearVenta(solicitud);
+        Venta venta = iVentaService.crearVenta(id_empresa, solicitud);
         RespuestaApi<Venta> response = new RespuestaApi<>(true, "Venta creada con exito", venta);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

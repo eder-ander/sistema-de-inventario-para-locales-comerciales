@@ -37,10 +37,6 @@ public class ProductoController {
      */
     @PostMapping
     public ResponseEntity<RespuestaApi<Producto>> save(@RequestBody Producto producto) {
-        if (producto.getNombre() == null || producto.getNombre().isEmpty() || producto.getCantidad() == null ||producto.getPrecio() < 0
-                || producto.getCantidad() < 0 || producto.getEmpresa().getId() == null) {
-            throw new BadRequestException("El nombre es obligatorio, la cantidad y precio debe ser mayor o igual a 0, el id de empresa es obligatorio");
-        }
 
         Producto productoSave = productoService.guardarProducto(producto, producto.getEmpresa().getId());
 
@@ -77,10 +73,7 @@ public class ProductoController {
     public ResponseEntity<RespuestaApi<List<RequestProductoDto>>> lista(@PathVariable Long id_empresa) {
         List<Producto> productos = productoService.listarProductos(id_empresa);
 
-        List<RequestProductoDto> dto =
-                productos
-                        .stream()
-                        .map( x -> {
+        List<RequestProductoDto> dto = productos.stream().map( x -> {
             RequestProductoDto requestProductoDto = new RequestProductoDto();
 
             requestProductoDto.setId(x.getId());

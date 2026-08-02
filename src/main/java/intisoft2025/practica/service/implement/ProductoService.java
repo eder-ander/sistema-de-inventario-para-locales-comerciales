@@ -1,5 +1,6 @@
-package intisoft2025.practica.service.ProductoServiceimp;
+package intisoft2025.practica.service.implement;
 
+import intisoft2025.practica.exception.BadRequestException;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.model.Producto;
 import intisoft2025.practica.repository.EmpresaRepository;
@@ -39,6 +40,10 @@ public class ProductoService implements IProductoService {
      */
     @Override
     public Producto guardarProducto(Producto producto, Long id_empresa){
+        if (producto.getNombre() == null || producto.getNombre().isEmpty() || producto.getCantidad() == null ||producto.getPrecio() < 0
+                || producto.getCantidad() < 0 || producto.getEmpresa().getId() == null) {
+            throw new BadRequestException("El nombre es obligatorio, la cantidad y precio debe ser mayor o igual a 0, el id de empresa es obligatorio");
+        }
         Empresa buscar = buscarEmpresa(id_empresa);
         producto.setEmpresa(buscar);
         return productoRepository.save(producto);
@@ -64,7 +69,7 @@ public class ProductoService implements IProductoService {
     @Override
     public Producto buscarProducto(Long id_empresa, Long id){
         Producto productoBuscar = productoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No se encontro producto"));
+                .orElseThrow(() -> new RuntimeException("No se encontro producto con id = "+id));
 
         // validar si ese producto pertenece a la empresa consultada
         if(!productoBuscar.getEmpresa().getId().equals(id_empresa)){

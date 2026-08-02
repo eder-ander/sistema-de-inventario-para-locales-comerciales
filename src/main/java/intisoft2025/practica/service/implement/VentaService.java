@@ -1,14 +1,15 @@
-package intisoft2025.practica.service.ProductoServiceimp;
+package intisoft2025.practica.service.implement;
 
 import intisoft2025.practica.model.DetalleVenta;
+import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.model.Producto;
 import intisoft2025.practica.model.Venta;
 import intisoft2025.practica.dto.VentaRequestDTO;
 import intisoft2025.practica.dto.DetalleRequestDTO;
+import intisoft2025.practica.repository.EmpresaRepository;
 import intisoft2025.practica.repository.VentaRepository;
 import intisoft2025.practica.repository.ProductoRepository;
 import intisoft2025.practica.service.IVentaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,22 +17,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class VentaService implements IVentaService {
 
-    private ProductoRepository productoRepository;
-    private VentaRepository ventaRepository;
+    private final ProductoRepository productoRepository;
+    private final VentaRepository ventaRepository;
+    private final EmpresaRepository empresaRepository;
 
     /**
      * Inyeccion de dependecias para producto_repository y venta_repository
      * @param productoRepository
      * @param ventaRepository
      */
-    public VentaService(ProductoRepository productoRepository, VentaRepository ventaRepository){
+    public VentaService(ProductoRepository productoRepository, VentaRepository ventaRepository, EmpresaRepository empresaRepository){
+        this.empresaRepository = empresaRepository;
         this.productoRepository = productoRepository;
         this.ventaRepository = ventaRepository;
     }
 
     @Override
-    public Venta crearVenta(VentaRequestDTO productosDto) {
-
+    public Venta crearVenta(Long id_empresa, VentaRequestDTO productosDto) {
         // 1. Creamos la venta base ("el recibo")
         Venta nuevaVenta = new Venta();
 
@@ -42,6 +44,11 @@ public class VentaService implements IVentaService {
                 // Buscamos el producto
                 Producto producto = productoRepository.findById(item.getProductoId())
                         .orElseThrow(() -> new RuntimeException("Producto con ID " + item.getProductoId() + " no encontrado"));
+
+                //verificamos si este producto pertenence a esta empresa
+                if(!producto.getEmpresa().getId().equals(id_empresa)){
+                    throw  new RuntimeException("Este producto no pertenece a esta empresa.");
+                }
 
                 // Validamos stock
                 if (producto.getCantidad() < item.getCantidad()) {

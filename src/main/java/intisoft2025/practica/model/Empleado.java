@@ -47,13 +47,20 @@ public class Empleado {
 
 
     public Empleado() {}
-    public Empleado(String dni, String nombre, String apellido, String rol, String numero_whatsapp, String correo ){
+    public Empleado(String dni,
+                    String nombre,
+                    String apellido,
+                    String rol,
+                    String numero_whatsapp,
+                    String correo,
+                    boolean estado_empleado){
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.rol = rol;
         this.numero_whatsapp = numero_whatsapp;
         this.correo = correo;
+        this.estado_empleado = estado_empleado;
     }
 
 }
