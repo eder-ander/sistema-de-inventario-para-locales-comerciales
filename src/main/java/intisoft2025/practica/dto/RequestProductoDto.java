@@ -1,5 +1,7 @@
 package intisoft2025.practica.dto;
 
+import intisoft2025.practica.model.Producto;
+
 public class RequestProductoDto {
     private Long id;
     private String nombre;
@@ -8,7 +10,14 @@ public class RequestProductoDto {
     private String nombre_empresa;
 
     public RequestProductoDto(){
+    }
 
+    public RequestProductoDto(Producto producto){
+        setId(producto.getId());
+        setNombre(producto.getNombre());
+        setPrecio(producto.getPrecio());
+        setCantidad(producto.getCantidad());
+        setNombre_empresa(producto.getEmpresa().getNombre());
     }
 
     public Long getId() {
