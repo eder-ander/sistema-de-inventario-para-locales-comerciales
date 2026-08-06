@@ -1,6 +1,6 @@
 package intisoft2025.practica.service;
 
-import intisoft2025.practica.dto.EmpresaRequestDto;
+import intisoft2025.practica.dto.empresa.EmpresaRequestDto;
 import intisoft2025.practica.model.Empresa;
 
 public interface IEmpresaService {

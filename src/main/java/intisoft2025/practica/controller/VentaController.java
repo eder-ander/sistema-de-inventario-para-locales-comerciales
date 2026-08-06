@@ -1,9 +1,8 @@
 package intisoft2025.practica.controller;
 
-import intisoft2025.practica.dto.DetalleRequestDTO;
-import intisoft2025.practica.dto.RespuestaApi;
-import intisoft2025.practica.dto.VentaRequestDTO;
-import intisoft2025.practica.exception.BadRequestException;
+import intisoft2025.practica.dto.common.RespuestaApi;
+import intisoft2025.practica.dto.venta.VentaRequestDTO;
+import intisoft2025.practica.dto.venta.VentaResponseDTO;
 import intisoft2025.practica.model.Venta;
 import intisoft2025.practica.service.IVentaService;
 import org.springframework.http.HttpStatus;
@@ -22,26 +21,13 @@ public class VentaController {
 
     /**
      * Procesa una nueva venta.
-     * Realiza validaciones de entrada antes de delegar al servicio.
-     * 
-     * @param solicitud DTO con la lista de productos y cantidades.
-     * @return ResponseEntity con la venta creada.
      */
     @PostMapping("/{id_empresa}")
-    public ResponseEntity<RespuestaApi<Venta>> crearVenta(@PathVariable Long id_empresa, @RequestBody VentaRequestDTO solicitud) {
-        if(solicitud == null || solicitud.getProductos() == null || solicitud.getProductos().isEmpty()){
-            throw new BadRequestException("Debe de aver productos existentes.");
-        }
-        for (DetalleRequestDTO id: solicitud.getProductos()){
-            if (id.getProductoId() == null || id.getProductoId() <= 0){
-                throw new BadRequestException("Debe de aver un id valido");
-            }
-            if(id.getCantidad() <= 0){
-                throw new BadRequestException("Debe de ingresar una cantidad valida >= 1");
-            }
-        }
+    public ResponseEntity<RespuestaApi<VentaResponseDTO>> crearVenta(@PathVariable Long id_empresa, @RequestBody VentaRequestDTO solicitud) {
         Venta venta = iVentaService.crearVenta(id_empresa, solicitud);
-        RespuestaApi<Venta> response = new RespuestaApi<>(true, "Venta creada con exito", venta);
+        VentaResponseDTO dto = new VentaResponseDTO(venta);
+        
+        RespuestaApi<VentaResponseDTO> response = new RespuestaApi<>(true, "Venta creada con éxito", dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

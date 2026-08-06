@@ -1,7 +1,7 @@
 package intisoft2025.practica.service;
 
 import intisoft2025.practica.model.Venta;
-import intisoft2025.practica.dto.VentaRequestDTO;
+import intisoft2025.practica.dto.venta.VentaRequestDTO;
 
 public interface IVentaService {
 

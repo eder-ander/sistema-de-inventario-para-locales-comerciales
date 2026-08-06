@@ -1,6 +1,6 @@
 package intisoft2025.practica.service;
 
-import intisoft2025.practica.dto.EmpleadoRequestDTO;
+import intisoft2025.practica.dto.empleado.EmpleadoRequestDTO;
 import intisoft2025.practica.model.Empleado;
 
 public interface IEmpleadoService {

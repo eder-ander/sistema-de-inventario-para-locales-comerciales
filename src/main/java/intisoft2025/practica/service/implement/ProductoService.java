@@ -1,6 +1,6 @@
 package intisoft2025.practica.service.implement;
 
-import intisoft2025.practica.dto.RequestProductoDto;
+import intisoft2025.practica.dto.producto.RequestProductoDto;
 import intisoft2025.practica.exception.BadRequestException;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.model.Producto;
@@ -40,7 +40,7 @@ public class ProductoService implements IProductoService {
      */
     @Override
     public Producto guardarProducto(RequestProductoDto producto, Long id_empresa){
-        if (producto.getNombre() == null || producto.getNombre().isEmpty() || producto.getCantidad() == null ||producto.getPrecio() < 0
+        if (producto.getNombre() == null || producto.getNombre().isEmpty() || producto.getCantidad() == null ||producto.getPrecio() == null ||producto.getPrecio() < 0
                 || producto.getCantidad() < 0) {
             throw new BadRequestException("El nombre es obligatorio, la cantidad y precio debe ser mayor o igual a 0, el id de empresa es obligatorio");
         }

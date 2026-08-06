@@ -1,7 +1,7 @@
 package intisoft2025.practica.controller;
 
-import intisoft2025.practica.dto.EmpleadoRequestDTO;
-import intisoft2025.practica.dto.RespuestaApi;
+import intisoft2025.practica.dto.empleado.EmpleadoRequestDTO;
+import intisoft2025.practica.dto.common.RespuestaApi;
 import intisoft2025.practica.model.Empleado;
 import intisoft2025.practica.service.IEmpleadoService;
 import org.springframework.http.HttpStatus;

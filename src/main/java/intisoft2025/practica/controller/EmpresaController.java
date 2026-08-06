@@ -1,16 +1,15 @@
 package intisoft2025.practica.controller;
 
-import intisoft2025.practica.dto.EmpresaRequestDto;
-import intisoft2025.practica.dto.RespuestaApi;
+import intisoft2025.practica.dto.empresa.EmpresaRequestDto;
+import intisoft2025.practica.dto.common.RespuestaApi;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.service.IEmpresaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("/empresa")
 public class EmpresaController {
 
     private final IEmpresaService iEmpresaService;
@@ -20,12 +19,10 @@ public class EmpresaController {
     }
 
     @PostMapping
-    public ResponseEntity<RespuestaApi<Empresa>> crearEmpresa(EmpresaRequestDto empresaRequestDto){
+    public ResponseEntity<RespuestaApi<EmpresaRequestDto>> crearEmpresa(@RequestBody EmpresaRequestDto empresaRequestDto){
         Empresa empresa = iEmpresaService.crearEmpresa(empresaRequestDto);
-        /**
-         * Aqui falta... manejar excepciones
-         */
-        RespuestaApi<Empresa> response = new RespuestaApi<>(true, "Empresa creada con exito", empresa);
+        EmpresaRequestDto dto = new EmpresaRequestDto(empresa);
+        RespuestaApi<EmpresaRequestDto> response = new RespuestaApi<>(true, "Empresa creada con éxito", dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -37,15 +34,14 @@ public class EmpresaController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/")
+    @PutMapping("/{id_empresa}")
     public ResponseEntity<RespuestaApi<EmpresaRequestDto>> actualizarEmpresa(@PathVariable Long id_empresa,
-                                                                   EmpresaRequestDto empresaRequestDto){
+                                                                   @RequestBody EmpresaRequestDto empresaRequestDto){
 
         Empresa empresaActualizada = iEmpresaService.actualizarEmpresa(id_empresa, empresaRequestDto);
         EmpresaRequestDto dto = new EmpresaRequestDto(empresaActualizada);
 
-        RespuestaApi<EmpresaRequestDto> responde = new RespuestaApi<>(true, "Empresa actualizada", dto);
-        return ResponseEntity.ok(responde);
+        RespuestaApi<EmpresaRequestDto> response = new RespuestaApi<>(true, "Empresa actualizada", dto);
+        return ResponseEntity.ok(response);
     }
-
 }

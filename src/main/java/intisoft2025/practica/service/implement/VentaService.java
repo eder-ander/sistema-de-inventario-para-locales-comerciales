@@ -1,11 +1,12 @@
 package intisoft2025.practica.service.implement;
 
+import intisoft2025.practica.exception.BadRequestException;
 import intisoft2025.practica.model.DetalleVenta;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.model.Producto;
 import intisoft2025.practica.model.Venta;
-import intisoft2025.practica.dto.VentaRequestDTO;
-import intisoft2025.practica.dto.DetalleRequestDTO;
+import intisoft2025.practica.dto.venta.VentaRequestDTO;
+import intisoft2025.practica.dto.venta.DetalleRequestDTO;
 import intisoft2025.practica.repository.EmpresaRepository;
 import intisoft2025.practica.repository.VentaRepository;
 import intisoft2025.practica.repository.ProductoRepository;
@@ -34,6 +35,19 @@ public class VentaService implements IVentaService {
 
     @Override
     public Venta crearVenta(Long id_empresa, VentaRequestDTO productosDto) {
+
+        if(productosDto == null || productosDto.getProductos() == null || productosDto.getProductos().isEmpty()){
+            throw new BadRequestException("Debe de aver productos existentes.");
+        }
+        for (DetalleRequestDTO id: productosDto.getProductos()){
+            if (id.getProductoId() == null || id.getProductoId() <= 0){
+                throw new BadRequestException("Debe de aver un id valido");
+            }
+            if(id.getCantidad() <= 0){
+                throw new BadRequestException("Debe de ingresar una cantidad valida >= 1");
+            }
+        }
+
         // 1. Creamos la venta base ("el recibo")
         Venta nuevaVenta = new Venta();
 

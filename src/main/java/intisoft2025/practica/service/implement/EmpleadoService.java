@@ -1,6 +1,6 @@
 package intisoft2025.practica.service.implement;
 
-import intisoft2025.practica.dto.EmpleadoRequestDTO;
+import intisoft2025.practica.dto.empleado.EmpleadoRequestDTO;
 import intisoft2025.practica.model.Empleado;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.repository.EmpleadoRepository;
@@ -60,7 +60,7 @@ public class EmpleadoService implements IEmpleadoService {
     }
 
     /**
-     * Metodo que nos sirve para editar datos de un empleado
+     * Metodo que nos sirve para editar datos de un empleado haciendo las verficaciones nesesarias.
      * @param idEmpresa
      * @param dniEmpleado
      * @param empleado
@@ -68,11 +68,12 @@ public class EmpleadoService implements IEmpleadoService {
      */
     @Override
     public Empleado editarDatoEmpleado(Long idEmpresa, String dniEmpleado, EmpleadoRequestDTO empleado) {
+        //Buscar empleado
         Empleado busquedaEmpleado =
                 empleadoRepository
                         .findById(dniEmpleado)
                         .orElseThrow(() -> new RuntimeException("No se encontro empleado con id =" + dniEmpleado));
-
+        //verificar si ese empleado pertenenece a esa empresa
         if(!busquedaEmpleado.getEmpresa().getId().equals(idEmpresa)) throw new RuntimeException("No tienes acceso a esta empresa.");
 
         busquedaEmpleado.setNombre(empleado.getNombres());
@@ -84,8 +85,12 @@ public class EmpleadoService implements IEmpleadoService {
         return empleadoRepository.save(busquedaEmpleado);
     }
 
-
-
+    /**
+     * Devuelve los datos de un unico empleado.
+     * @param idEmpresa
+     * @param dniEmpleado
+     * @return
+     */
     @Override
     @Transactional(readOnly = true)
     public EmpleadoRequestDTO datosEmpleado(Long idEmpresa, String dniEmpleado) {

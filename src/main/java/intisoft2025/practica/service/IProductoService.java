@@ -1,6 +1,6 @@
 package intisoft2025.practica.service;
 
-import intisoft2025.practica.dto.RequestProductoDto;
+import intisoft2025.practica.dto.producto.RequestProductoDto;
 import intisoft2025.practica.model.Producto;
 
 import java.util.List;

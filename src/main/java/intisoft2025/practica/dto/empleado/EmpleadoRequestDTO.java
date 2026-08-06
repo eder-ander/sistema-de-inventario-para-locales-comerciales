@@ -1,11 +1,13 @@
-package intisoft2025.practica.dto;
+package intisoft2025.practica.dto.empleado;
 
 import intisoft2025.practica.model.Empleado;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class EmpleadoRequestDTO {
 
     private String dni;
@@ -15,9 +17,6 @@ public class EmpleadoRequestDTO {
     private String numero_whatsapp;
     private String correo;
     private boolean estado_empleado;
-
-
-    public EmpleadoRequestDTO(){}
 
     public EmpleadoRequestDTO(Empleado e) {
         this.dni = e.getDni();
