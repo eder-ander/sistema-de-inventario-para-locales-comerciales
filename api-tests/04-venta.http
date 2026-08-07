@@ -1,0 +1,45 @@
+### 1. Registrar una Nueva Venta para la Empresa ID 1
+POST http://localhost:8080/ventas/1
+Content-Type: application/json
+
+{
+  "dniEmpleado": "71234567",
+  "productos": [
+    {
+      "productoId": 1,
+      "cantidad": 2
+    },
+    {
+      "productoId": 2,
+      "cantidad": 1
+    }
+  ]
+}
+
+### 2. Probar Error (Stock Insuficiente)
+POST http://localhost:8080/ventas/1
+Content-Type: application/json
+
+{
+  "dniEmpleado": "71234567",
+  "productos": [
+    {
+      "productoId": 1,
+      "cantidad": 9999
+    }
+  ]
+}
+
+### 3. Probar Error (Producto de Otra Empresa o Inexistente)
+POST http://localhost:8080/ventas/1
+Content-Type: application/json
+
+{
+  "dniEmpleado": "71234567",
+  "productos": [
+    {
+      "productoId": 999,
+      "cantidad": 1
+    }
+  ]
+}

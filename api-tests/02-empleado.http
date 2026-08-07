@@ -1,0 +1,31 @@
+### 1. Crear Nuevo Empleado para la Empresa ID 1
+POST http://localhost:8080/empleados/1
+Content-Type: application/json
+
+{
+  "dni": "71234567",
+  "nombres": "Juan Carlos",
+  "apellidos": "Perez Gomez",
+  "rol": "CAJERO",
+  "numero_whatsapp": "912345678",
+  "correo": "juan.perez@donpepe.com",
+  "estado_empleado": true
+}
+
+### 2. Obtener Datos de Empleado por Empresa e ID (DNI)
+GET http://localhost:8080/empleados/1/71234567
+Accept: application/json
+
+### 3. Editar Datos de Empleado por Empresa e ID (DNI)
+PUT http://localhost:8080/empleados/1/71234567
+Content-Type: application/json
+
+{
+  "dni": "71234567",
+  "nombres": "Juan Carlos",
+  "apellidos": "Perez Gomez",
+  "rol": "ADMINISTRADOR",
+  "numero_whatsapp": "999888777",
+  "correo": "juan.admin@donpepe.com",
+  "estado_empleado": true
+}

@@ -1,0 +1,27 @@
+### 1. Crear Nueva Empresa
+POST http://localhost:8080/empresa
+Content-Type: application/json
+
+{
+  "nombre": "Comercial Don Pepe",
+  "rubro": "Abarrotes",
+  "numero_whatsapp": "987654321",
+  "correo": "contacto@donpepe.com",
+  "direccion": "Av. Principal 123"
+}
+
+### 2. Obtener Datos de Empresa por ID
+GET http://localhost:8080/empresa/1
+Accept: application/json
+
+### 3. Actualizar Empresa por ID
+PUT http://localhost:8080/empresa/1
+Content-Type: application/json
+
+{
+  "nombre": "Comercial Don Pepe S.A.C.",
+  "rubro": "Supermercado",
+  "numero_whatsapp": "987654321",
+  "correo": "ventas@donpepe.com",
+  "direccion": "Av. Principal 123, Lima"
+}
