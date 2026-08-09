@@ -1,6 +1,8 @@
 package intisoft2025.practica.service.implement;
 
 import intisoft2025.practica.dto.empleado.EmpleadoRequestDTO;
+import intisoft2025.practica.exception.BadRequestException;
+import intisoft2025.practica.exception.ResourceNotFoundException;
 import intisoft2025.practica.model.Empleado;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.repository.EmpleadoRepository;
@@ -29,7 +31,7 @@ public class EmpleadoService implements IEmpleadoService {
 
     private Empresa buscarEmpresa(Long id_empresa) {
         return empresaRepository.findById(id_empresa)
-                .orElseThrow(() -> new RuntimeException("No se encontro empresa"));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro empresa con id = " + id_empresa));
     }
 
     /**
@@ -72,9 +74,9 @@ public class EmpleadoService implements IEmpleadoService {
         Empleado busquedaEmpleado =
                 empleadoRepository
                         .findById(dniEmpleado)
-                        .orElseThrow(() -> new RuntimeException("No se encontro empleado con id =" + dniEmpleado));
+                        .orElseThrow(() -> new ResourceNotFoundException("No se encontro empleado con id = " + dniEmpleado));
         //verificar si ese empleado pertenenece a esa empresa
-        if(!busquedaEmpleado.getEmpresa().getId().equals(idEmpresa)) throw new RuntimeException("No tienes acceso a esta empresa.");
+        if(!busquedaEmpleado.getEmpresa().getId().equals(idEmpresa)) throw new BadRequestException("No tienes acceso a esta empresa.");
 
         busquedaEmpleado.setNombre(empleado.getNombres());
         busquedaEmpleado.setApellido(empleado.getApellidos());
@@ -96,12 +98,13 @@ public class EmpleadoService implements IEmpleadoService {
     public EmpleadoRequestDTO datosEmpleado(Long idEmpresa, String dniEmpleado) {
         Empleado empleado = empleadoRepository
                 .findById(dniEmpleado)
-                .orElseThrow(() -> new RuntimeException("No se encontro empleado con id = " + dniEmpleado));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro empleado con id = " + dniEmpleado));
 
         if (!empleado.getEmpresa().getId().equals(idEmpresa)) {
-            throw new RuntimeException("Acceso denegado: El empleado no pertenece a tu empresa");
+            throw new BadRequestException("Acceso denegado: El empleado no pertenece a tu empresa");
         }
 
         return new EmpleadoRequestDTO(empleado);
     }
 }
+

@@ -10,5 +10,5 @@ public interface IVentaService {
      * @param solicitud
      * @return
      */
-    Venta crearVenta(Long id_empresa, VentaRequestDTO solicitud);
+    Venta crearVenta(Long id_empresa, String dniEmpleado, VentaRequestDTO solicitud);
 }

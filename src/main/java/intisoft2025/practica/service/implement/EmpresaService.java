@@ -1,6 +1,7 @@
 package intisoft2025.practica.service.implement;
 
 import intisoft2025.practica.dto.empresa.EmpresaRequestDto;
+import intisoft2025.practica.exception.ResourceNotFoundException;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.repository.EmpresaRepository;
 import intisoft2025.practica.service.IEmpresaService;
@@ -33,14 +34,14 @@ public class EmpresaService implements IEmpresaService {
     @Transactional(readOnly = true)
     public EmpresaRequestDto datosEmpresa(Long idEmpresa) {
         Empresa empresa = empresaRepository.findById(idEmpresa).
-                orElseThrow(() -> new RuntimeException("No se encontro empresa con id = " + idEmpresa));
+                orElseThrow(() -> new ResourceNotFoundException("No se encontro empresa con id = " + idEmpresa));
         return new EmpresaRequestDto(empresa);
     }
 
     @Override
     public Empresa actualizarEmpresa(Long idEmpresa, EmpresaRequestDto empresaRequestDto) {
         Empresa empresa = empresaRepository.findById(idEmpresa).
-                orElseThrow(() -> new RuntimeException("No se encontro empresa con id = " + idEmpresa));
+                orElseThrow(() -> new ResourceNotFoundException("No se encontro empresa con id = " + idEmpresa));
 
         empresa.setNombre(empresaRequestDto.getNombre());
         empresa.setRubro(empresaRequestDto.getRubro());
@@ -51,3 +52,4 @@ public class EmpresaService implements IEmpresaService {
         return empresaRepository.save(empresa);
     }
 }
+

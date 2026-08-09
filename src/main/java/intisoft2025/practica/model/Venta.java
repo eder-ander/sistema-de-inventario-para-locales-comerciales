@@ -32,6 +32,8 @@ public class Venta {
     @JsonBackReference("empleado_venta")
     private Empleado empleado;
 
+
+
     @PrePersist
     protected void onCreated(){
         this.fecha = Instant.now();
@@ -66,5 +68,13 @@ public class Venta {
 
     public void setDetalleVentas(List<DetalleVenta> detalleVentas) {
         this.detalleVentas = detalleVentas;
+    }
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
     }
 }

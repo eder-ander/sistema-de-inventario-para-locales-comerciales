@@ -10,6 +10,5 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class VentaRequestDTO {
-    private String dniEmpleado;
     private List<DetalleRequestDTO> productos;
 }

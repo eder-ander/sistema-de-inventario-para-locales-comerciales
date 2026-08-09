@@ -2,6 +2,7 @@ package intisoft2025.practica.service.implement;
 
 import intisoft2025.practica.dto.producto.RequestProductoDto;
 import intisoft2025.practica.exception.BadRequestException;
+import intisoft2025.practica.exception.ResourceNotFoundException;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.model.Producto;
 import intisoft2025.practica.repository.EmpresaRepository;
@@ -32,7 +33,7 @@ public class ProductoService implements IProductoService {
      */
     private Empresa buscarEmpresa(Long id_empresa) {
         return empresaRepository.findById(id_empresa)
-                .orElseThrow(() -> new RuntimeException("No se encontro empresa"));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro empresa con id = " + id_empresa));
     }
 
     /**
@@ -53,17 +54,16 @@ public class ProductoService implements IProductoService {
         nuevoProducto.setEmpresa(empresaEncontrada);
         return productoRepository.save(nuevoProducto);
     }
-
     /**
      * Metodo para actualizar un producto de una empresa
      */
     @Override
     public Producto actualizarProducto(Long id_empresa, Long id_producto, RequestProductoDto producto){
         Producto productoExistente = productoRepository.findById(id_producto)
-                .orElseThrow(() -> new RuntimeException("No se encontro producto con id_producto = " + id_producto));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro producto con id_producto = " + id_producto));
 
         if(!productoExistente.getEmpresa().getId().equals(id_empresa)){
-            throw new RuntimeException("Acceso denegado: El producto no pertenece a tu empresa");
+            throw new BadRequestException("Acceso denegado: El producto no pertenece a tu empresa");
         }
 
         productoExistente.setNombre(producto.getNombre());
@@ -78,9 +78,9 @@ public class ProductoService implements IProductoService {
     @Override
     public RequestProductoDto buscarProducto(Long id_empresa, Long id){
         Producto productoBuscar = productoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No se encontro producto con id = "+id));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro producto con id = " + id));
         if(!productoBuscar.getEmpresa().getId().equals(id_empresa)){
-            throw new RuntimeException("Acceso denegado: El producto no pertenece a tu empresa");
+            throw new BadRequestException("Acceso denegado: El producto no pertenece a tu empresa");
         }
         return new RequestProductoDto(productoBuscar);
     }
@@ -98,3 +98,4 @@ public class ProductoService implements IProductoService {
         return dto;
     }
 }
+

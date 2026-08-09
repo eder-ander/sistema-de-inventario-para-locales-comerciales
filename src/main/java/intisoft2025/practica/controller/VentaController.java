@@ -22,9 +22,11 @@ public class VentaController {
     /**
      * Procesa una nueva venta.
      */
-    @PostMapping("/{id_empresa}")
-    public ResponseEntity<RespuestaApi<VentaResponseDTO>> crearVenta(@PathVariable Long id_empresa, @RequestBody VentaRequestDTO solicitud) {
-        Venta venta = iVentaService.crearVenta(id_empresa, solicitud);
+    @PostMapping("/{id_empresa}/{dniEmpleado}")
+    public ResponseEntity<RespuestaApi<VentaResponseDTO>> crearVenta(@PathVariable Long id_empresa,
+                                                                     @PathVariable String dniEmpleado,
+                                                                     @RequestBody VentaRequestDTO solicitud) {
+        Venta venta = iVentaService.crearVenta(id_empresa, dniEmpleado, solicitud);
         VentaResponseDTO dto = new VentaResponseDTO(venta);
         
         RespuestaApi<VentaResponseDTO> response = new RespuestaApi<>(true, "Venta creada con éxito", dto);
