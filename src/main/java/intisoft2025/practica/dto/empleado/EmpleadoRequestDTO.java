@@ -17,6 +17,7 @@ public class EmpleadoRequestDTO {
     private String numero_whatsapp;
     private String correo;
     private boolean estado_empleado;
+    private String username;
 
     public EmpleadoRequestDTO(Empleado e) {
         this.dni = e.getDni();
@@ -26,5 +27,6 @@ public class EmpleadoRequestDTO {
         this.numero_whatsapp = e.getNumero_whatsapp();
         this.correo = e.getCorreo();
         this.estado_empleado = e.isEstado_empleado();
+        this.username = e.getUsername();
     }
 }

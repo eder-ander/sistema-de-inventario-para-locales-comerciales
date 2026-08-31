@@ -51,7 +51,8 @@ public class EmpleadoService implements IEmpleadoService {
                 empleado.getRol(),
                 empleado.getNumero_whatsapp(),
                 empleado.getCorreo(),
-                empleado.isEstado_empleado()
+                empleado.isEstado_empleado(),
+                empleado.getUsername()
         );
 
         //a futuro manejar un encriptador de contraseñas
@@ -71,8 +72,7 @@ public class EmpleadoService implements IEmpleadoService {
     @Override
     public Empleado editarDatoEmpleado(Long idEmpresa, String dniEmpleado, EmpleadoRequestDTO empleado) {
         //Buscar empleado
-        Empleado busquedaEmpleado =
-                empleadoRepository
+        Empleado busquedaEmpleado = empleadoRepository
                         .findById(dniEmpleado)
                         .orElseThrow(() -> new ResourceNotFoundException("No se encontro empleado con id = " + dniEmpleado));
         //verificar si ese empleado pertenenece a esa empresa

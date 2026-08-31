@@ -35,6 +35,9 @@ public class Empleado {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false, unique = true)
+    private String username;
+
     @ManyToOne
     @JoinColumn(name = "id_empresa", nullable = false)
     @JsonBackReference("empresa_empleado")
@@ -53,7 +56,8 @@ public class Empleado {
                     String rol,
                     String numero_whatsapp,
                     String correo,
-                    boolean estado_empleado){
+                    boolean estado_empleado,
+                    String username){
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -61,6 +65,7 @@ public class Empleado {
         this.numero_whatsapp = numero_whatsapp;
         this.correo = correo;
         this.estado_empleado = estado_empleado;
+        this.username = username;
     }
 
 }
