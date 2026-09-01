@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,8 +14,8 @@ public class DetalleVentaResponseDTO {
     private Long idProducto;
     private String nombreProducto;
     private Integer cantidad;
-    private Integer precioUnitario;
-    private Integer subtotal;
+    private BigDecimal precioUnitario;
+    private BigDecimal subtotal;
 
     public DetalleVentaResponseDTO(DetalleVenta detalle) {
         if (detalle.getProducto() != null) {
@@ -23,7 +25,7 @@ public class DetalleVentaResponseDTO {
         this.cantidad = detalle.getCantidad();
         this.precioUnitario = detalle.getPrecio();
         this.subtotal = (detalle.getCantidad() != null && detalle.getPrecio() != null)
-                ? detalle.getCantidad() * detalle.getPrecio()
-                : 0;
+                ? detalle.getPrecio().multiply(BigDecimal.valueOf(detalle.getCantidad()))
+                : BigDecimal.ZERO;
     }
 }

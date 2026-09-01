@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class Producto {
     @Column(name = "nombre_productos", length = 50, nullable = false)
     private String nombre;
 
-    @Column(name = "precio_unitario", nullable = false)
-    private Integer precio;
+    @Column(name = "precio_unitario", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precio;
 
     @Column(nullable = false)
     private Integer cantidad;
@@ -37,7 +38,7 @@ public class Producto {
     @JsonBackReference("empresa_producto")
     private Empresa empresa;
 
-    public Producto(String nombre, int precio, int cantidad) {
+    public Producto(String nombre, BigDecimal precio, int cantidad) {
         this.nombre = nombre;
         this.precio = precio;
         this.cantidad = cantidad;

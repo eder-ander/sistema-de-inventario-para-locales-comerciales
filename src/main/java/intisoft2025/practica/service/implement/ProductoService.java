@@ -10,6 +10,8 @@ import intisoft2025.practica.repository.ProductoRepository;
 import intisoft2025.practica.service.IProductoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -41,8 +43,7 @@ public class ProductoService implements IProductoService {
      */
     @Override
     public Producto guardarProducto(RequestProductoDto producto, Long id_empresa){
-        if (producto.getNombre() == null || producto.getNombre().isEmpty() || producto.getCantidad() == null ||producto.getPrecio() == null ||producto.getPrecio() < 0
-                || producto.getCantidad() < 0) {
+        if (producto.getNombre() == null || producto.getNombre().isEmpty() || producto.getCantidad() == null ||producto.getPrecio() == null || producto.getPrecio().compareTo(BigDecimal.ZERO) < 0 || producto.getCantidad() < 0) {
             throw new BadRequestException("El nombre es obligatorio, la cantidad y precio debe ser mayor o igual a 0, el id de empresa es obligatorio");
         }
         Empresa empresaEncontrada = buscarEmpresa(id_empresa);
