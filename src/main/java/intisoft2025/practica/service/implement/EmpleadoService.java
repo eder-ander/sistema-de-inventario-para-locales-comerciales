@@ -8,6 +8,7 @@ import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.repository.EmpleadoRepository;
 import intisoft2025.practica.repository.EmpresaRepository;
 import intisoft2025.practica.service.IEmpleadoService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,16 +18,22 @@ public class EmpleadoService implements IEmpleadoService {
 
     private final EmpresaRepository empresaRepository;
     private final EmpleadoRepository empleadoRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Inyeccion de dependencias
      * @param empresaRepository
      * @param empleadoRepository
+     * @param passwordEncoder
      */
-    public EmpleadoService(EmpresaRepository empresaRepository, EmpleadoRepository empleadoRepository){
+    public EmpleadoService(EmpresaRepository empresaRepository,
+                           EmpleadoRepository empleadoRepository,
+                           PasswordEncoder passwordEncoder){
         this.empresaRepository = empresaRepository;
         this.empleadoRepository = empleadoRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
 
     private Empresa buscarEmpresa(Long id_empresa) {
@@ -55,9 +62,9 @@ public class EmpleadoService implements IEmpleadoService {
                 empleado.getUsername()
         );
 
-        //a futuro manejar un encriptador de contraseñas
+        // Contraseña inicial = DNI encriptado con BCrypt
         nuevoEmpleado.setEmpresa(empresa);
-        nuevoEmpleado.setPassword(empleado.getDni());
+        nuevoEmpleado.setPassword(passwordEncoder.encode(empleado.getDni()));
 
         return empleadoRepository.save(nuevoEmpleado);
     }
