@@ -16,17 +16,24 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.empleadoRepository = empleadoRepository;
     }
 
+    /**
+     * Carga los datos del empleado por su nombre de usuario (username)
+     * y los mapea a la clase de seguridad CustomUserDetails.
+     * 
+     * Incluye validación segura para idEmpresa (permite superadministradores sin empresa asignada).
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Empleado empleado = empleadoRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("No se encontro el nombre de usuario = " + username));
 
+        // ponytail: mapeo seguro de atributos del empleado hacia el contexto de Spring Security
         return CustomUserDetails.builder()
                 .dni(empleado.getDni())
                 .username(empleado.getUsername())
                 .password(empleado.getPassword())
                 .rol(empleado.getRol())
-                .idEmpresa(empleado.getEmpresa().getId())
+                .idEmpresa(empleado.getEmpresa() != null ? empleado.getEmpresa().getId() : null)
                 .estado(empleado.isEstado_empleado())
                 .build();
     }
