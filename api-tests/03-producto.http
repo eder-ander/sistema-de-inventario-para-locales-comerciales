@@ -1,38 +1,38 @@
 ### 1. Crear Producto 1 para Empresa ID 1 (Galletas Oreo)
-POST http://localhost:8080/productos/1
+POST http://localhost:8080/api/productos/1
 Content-Type: application/json
 
 {
   "nombre": "Galletas Oreo 100g",
-  "precio": 150,
+  "precio": 1.50,
   "cantidad": 100
 }
 
 ### 2. Crear Producto 2 para Empresa ID 1 (Gaseosa Coca Cola)
-POST http://localhost:8080/productos/1
+POST http://localhost:8080/api/productos/1
 Content-Type: application/json
 
 {
   "nombre": "Gaseosa Coca Cola 500ml",
-  "precio": 250,
+  "precio": 2.50,
   "cantidad": 50
 }
 
 ### 3. Listar Todos los Productos de la Empresa ID 1
-GET http://localhost:8080/productos/1
+GET http://localhost:8080/api/productos/1
 Accept: application/json
 
 ### 4. Buscar Producto por ID de Empresa e ID de Producto
-GET http://localhost:8080/productos/1/1
+GET http://localhost:8080/api/productos/1/1
 Accept: application/json
 
 ### 5. Actualizar Producto ID 1 para Empresa ID 1
-PUT http://localhost:8080/productos/1/1
+PUT http://localhost:8080/api/productos/1/1
 Content-Type: application/json
 
 {
   "nombre": "Galletas Oreo 100g (Oferta)",
-  "precio": 140,
+  "precio": 1.40,
   "cantidad": 120
 }
 

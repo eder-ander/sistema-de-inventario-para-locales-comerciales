@@ -6,10 +6,11 @@ import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.service.IEmpresaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/empresa")
+@RequestMapping("/api/empresas")
 public class EmpresaController {
 
     private final IEmpresaService iEmpresaService;
@@ -19,6 +20,7 @@ public class EmpresaController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('SUPERADMIN')")
     public ResponseEntity<RespuestaApi<EmpresaRequestDto>> crearEmpresa(@RequestBody EmpresaRequestDto empresaRequestDto){
         Empresa empresa = iEmpresaService.crearEmpresa(empresaRequestDto);
         EmpresaRequestDto dto = new EmpresaRequestDto(empresa);

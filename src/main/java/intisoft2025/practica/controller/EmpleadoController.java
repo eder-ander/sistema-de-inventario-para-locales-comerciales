@@ -6,10 +6,11 @@ import intisoft2025.practica.model.Empleado;
 import intisoft2025.practica.service.IEmpleadoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/empleados")
+@RequestMapping("/api/empleados")
 public class EmpleadoController {
 
     private final IEmpleadoService empleadoService;
@@ -20,8 +21,11 @@ public class EmpleadoController {
 
     /**
      * Crear un nuevo empleado para una empresa
+     * @param id_empresa
+     * @param dto
      */
     @PostMapping("/{id_empresa}")
+    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
     public ResponseEntity<RespuestaApi<EmpleadoRequestDTO>> crearEmpleado(
             @PathVariable Long id_empresa,
             @RequestBody EmpleadoRequestDTO dto) {
