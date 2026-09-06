@@ -19,8 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     /**
      * Carga los datos del empleado por su nombre de usuario (username)
      * y los mapea a la clase de seguridad CustomUserDetails.
-     * 
-     * Incluye validación segura para idEmpresa (permite superadministradores sin empresa asignada).
+     *
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -33,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .username(empleado.getUsername())
                 .password(empleado.getPassword())
                 .rol(empleado.getRol())
-                .idEmpresa(empleado.getEmpresa() != null ? empleado.getEmpresa().getId() : null)
+                .idEmpresa(empleado.getEmpresa().getId())
                 .estado(empleado.isEstado_empleado())
                 .build();
     }

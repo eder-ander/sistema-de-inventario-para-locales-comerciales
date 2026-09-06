@@ -3,10 +3,12 @@ package intisoft2025.practica.controller;
 import intisoft2025.practica.dto.empleado.EmpleadoRequestDTO;
 import intisoft2025.practica.dto.common.RespuestaApi;
 import intisoft2025.practica.model.Empleado;
+import intisoft2025.practica.security.CustomUserDetails;
 import intisoft2025.practica.service.IEmpleadoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,7 +27,7 @@ public class EmpleadoController {
      * @param dto
      */
     @PostMapping("/{id_empresa}")
-    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
+    @PreAuthorize("hasRole('SUPERADMIN') or (hasRole('ADMIN') and authentication.principal.idEmpresa == #id_empresa)")
     public ResponseEntity<RespuestaApi<EmpleadoRequestDTO>> crearEmpleado(
             @PathVariable Long id_empresa,
             @RequestBody EmpleadoRequestDTO dto) {
@@ -40,12 +42,13 @@ public class EmpleadoController {
     /**
      * Obtener los datos de un empleado por su DNI y empresa
      */
-    @GetMapping("/{id_empresa}/{dni}")
+    @GetMapping("/{dni}")
+    @PreAuthorize("hasAnyRole('SUPERADMIN', 'ADMIN')")
     public ResponseEntity<RespuestaApi<EmpleadoRequestDTO>> datosEmpleado(
-            @PathVariable Long id_empresa,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable String dni) {
 
-        EmpleadoRequestDTO dto = empleadoService.datosEmpleado(id_empresa, dni);
+        EmpleadoRequestDTO dto = empleadoService.datosEmpleado(customUserDetails.getIdEmpresa(), dni);
 
         RespuestaApi<EmpleadoRequestDTO> response = new RespuestaApi<>(true, "Datos de empleado recuperados", dto);
         return ResponseEntity.ok(response);
@@ -54,13 +57,14 @@ public class EmpleadoController {
     /**
      * Editar datos de un empleado existente
      */
-    @PutMapping("/{id_empresa}/{dni}")
+    @PutMapping("/{dni}")
+    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
     public ResponseEntity<RespuestaApi<EmpleadoRequestDTO>> editarEmpleado(
-            @PathVariable Long id_empresa,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable String dni,
             @RequestBody EmpleadoRequestDTO dto) {
 
-        Empleado empleadoEditado = empleadoService.editarDatoEmpleado(id_empresa, dni, dto);
+        Empleado empleadoEditado = empleadoService.editarDatoEmpleado(customUserDetails.getIdEmpresa(), dni, dto);
         EmpleadoRequestDTO responseDto = new EmpleadoRequestDTO(empleadoEditado);
 
         RespuestaApi<EmpleadoRequestDTO> response = new RespuestaApi<>(true, "Empleado actualizado con éxito", responseDto);

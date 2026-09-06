@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class EmpresaRequestDto {
-    private Long id;
     private String nombre;
     private String rubro;
     private String numero_whatsapp;
@@ -17,7 +16,6 @@ public class EmpresaRequestDto {
     private String direccion;
 
     public EmpresaRequestDto(Empresa e) {
-        this.id = e.getId();
         this.nombre = e.getNombre();
         this.rubro = e.getRubro();
         this.numero_whatsapp = e.getNumero_whatsapp();
