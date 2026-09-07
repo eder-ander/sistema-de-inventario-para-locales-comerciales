@@ -15,6 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -22,48 +27,24 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
 
-    /**
-     * TRADUCCIÓN: Constructor de SecurityConfig (Inyección de dependencias convencional)
-     *
-     * Inyectamos nuestro filtro personalizado JwtAuthenticationFilter.
-     */
     public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
     }
 
-    /**
-     * TRADUCCIÓN: "Codificador de Contraseñas" (passwordEncoder)
-     *
-     * Define el algoritmo de hashing (BCrypt) para verificar y almacenar contraseñas.
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * TRADUCCIÓN: "Administrador de Autenticación" (authenticationManager)
-     *
-     * Expone el gestor de autenticación de Spring Security para poder inyectarlo
-     * en AuthController y validar credenciales (usuario y contraseña).
-     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    /**
-     * TRADUCCIÓN: "Cadena de Filtros de Seguridad" (securityFilterChain)
-     *
-     * Configura la seguridad HTTP:
-     * 1. Deshabilita CSRF (no necesario en APIs REST stateless con JWT).
-     * 2. Define permisos por ruta (públicas para login y endpoints públicos).
-     * 3. Configura la política de sesiones como STATELESS (sin sesión en servidor).
-     * 4. Registra JwtAuthenticationFilter ANTES de UsernamePasswordAuthenticationFilter.
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
@@ -90,5 +71,19 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    // ponytail: Bean de configuración CORS para permitir conexiones desde React (Vite / localhost:5173 / localhost:3000)
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("Authorization"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
