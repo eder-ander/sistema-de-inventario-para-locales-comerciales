@@ -1,6 +1,12 @@
-### 1. Crear Nueva Empresa
+### ============================================================
+### EMPRESAS - /api/empresas
+### ============================================================
+
+### ➕ 1. Crear Nueva Empresa
+### 🔐 Rol requerido: SUPERADMIN
 POST http://localhost:8080/api/empresas
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "nombre": "Comercial Don Pepe",
@@ -10,13 +16,21 @@ Content-Type: application/json
   "direccion": "Av. Principal 123"
 }
 
-### 2. Obtener Datos de Empresa por ID
-GET http://localhost:8080/api/empresas/1
-Accept: application/json
+### ---
 
-### 3. Actualizar Empresa por ID
+### 🔍 2. Ver datos de MI Empresa (extraído desde el JWT)
+### 🔐 Rol requerido: Cualquier usuario autenticado
+GET http://localhost:8080/api/empresas/mi-empresa
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### ---
+
+### ✏️ 3. Actualizar Empresa por ID
+### 🔐 Rol requerido: SUPERADMIN
 PUT http://localhost:8080/api/empresas/1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "nombre": "Comercial Don Pepe S.A.C.",
@@ -25,4 +39,3 @@ Content-Type: application/json
   "correo": "ventas@donpepe.com",
   "direccion": "Av. Principal 123, Lima"
 }
-

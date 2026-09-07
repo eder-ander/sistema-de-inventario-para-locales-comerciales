@@ -1,0 +1,35 @@
+### ============================================================
+### AUTENTICACIÓN - POST /api/auth/login
+### 🔓 Acceso: PÚBLICO (no requiere token)
+### ============================================================
+
+### Iniciar Sesión como SUPERADMIN
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### ---
+
+### Iniciar Sesión como ADMIN de empresa
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "carlos_admin",
+  "password": "72345678"
+}
+
+### ---
+
+### Iniciar Sesión como EMPLEADO / Cajero
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "maria_cajera",
+  "password": "71234567"
+}

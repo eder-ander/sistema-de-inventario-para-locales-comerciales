@@ -1,19 +1,34 @@
-### 1. Registrar una Nueva Venta para la Empresa ID 1 y Empleado DNI 71234567
-POST http://localhost:8080/api/ventas/1/71234567
+### ============================================================
+### VENTAS - /api/ventas
+### ============================================================
+### ⚠️  El id_empresa y dniEmpleado se extraen automáticamente del JWT.
+### ⚠️  No se necesitan PathVariables, todo viene del token autenticado.
+
+### ➕ 1. Registrar una Nueva Venta
+### 🔐 Rol requerido: ADMIN | EMPLEADO
+POST http://localhost:8080/api/ventas
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "productos": [
     {
       "productoId": 1,
       "cantidad": 2
+    },
+    {
+      "productoId": 2,
+      "cantidad": 1
     }
   ]
 }
 
-### 2. Probar Error (Stock Insuficiente)
-POST http://localhost:8080/api/ventas/1/71234567
+### ---
+
+### ❌ TEST: Stock Insuficiente → 400 Bad Request
+POST http://localhost:8080/api/ventas
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "productos": [
@@ -24,9 +39,12 @@ Content-Type: application/json
   ]
 }
 
-### 3. Probar Error (Producto de Otra Empresa o Inexistente)
-POST http://localhost:8080/api/ventas/1/71234567
+### ---
+
+### ❌ TEST: Producto Inexistente o de Otra Empresa → 404 / 400
+POST http://localhost:8080/api/ventas
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "productos": [
@@ -37,9 +55,12 @@ Content-Type: application/json
   ]
 }
 
-### 4. Probar Error (Cantidad Inválida <= 0)
-POST http://localhost:8080/api/ventas/1/71234567
+### ---
+
+### ❌ TEST: Cantidad Inválida (<= 0) → 400 Bad Request
+POST http://localhost:8080/api/ventas
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "productos": [
@@ -49,17 +70,3 @@ Content-Type: application/json
     }
   ]
 }
-
-### 5. Probar Error (Empleado Inexistente o de Otra Empresa)
-POST http://localhost:8080/api/ventas/1/00000000
-Content-Type: application/json
-
-{
-  "productos": [
-    {
-      "productoId": 1,
-      "cantidad": 1
-    }
-  ]
-}
-

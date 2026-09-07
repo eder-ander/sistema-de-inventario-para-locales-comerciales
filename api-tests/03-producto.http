@@ -1,6 +1,14 @@
-### 1. Crear Producto 1 para Empresa ID 1 (Galletas Oreo)
-POST http://localhost:8080/api/productos/1
+### ============================================================
+### PRODUCTOS - /api/productos
+### ============================================================
+### ⚠️  El id_empresa se extrae automáticamente del JWT (no va en la URL).
+### ⚠️  Precios en formato decimal: usar punto (.) como separador (ej: 1.50)
+
+### ➕ 1. Crear Producto (extraído empresa del JWT)
+### 🔐 Rol requerido: ADMIN | EMPLEADO
+POST http://localhost:8080/api/productos
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "nombre": "Galletas Oreo 100g",
@@ -8,9 +16,13 @@ Content-Type: application/json
   "cantidad": 100
 }
 
-### 2. Crear Producto 2 para Empresa ID 1 (Gaseosa Coca Cola)
-POST http://localhost:8080/api/productos/1
+### ---
+
+### ➕ 2. Crear Producto 2
+### 🔐 Rol requerido: ADMIN | EMPLEADO
+POST http://localhost:8080/api/productos
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "nombre": "Gaseosa Coca Cola 500ml",
@@ -18,21 +30,32 @@ Content-Type: application/json
   "cantidad": 50
 }
 
-### 3. Listar Todos los Productos de la Empresa ID 1
+### ---
+
+### 🔍 3. Buscar Producto por ID
+### 🔐 Rol requerido: ADMIN | EMPLEADO
 GET http://localhost:8080/api/productos/1
 Accept: application/json
+Authorization: Bearer {{token}}
 
-### 4. Buscar Producto por ID de Empresa e ID de Producto
-GET http://localhost:8080/api/productos/1/1
+### ---
+
+### 📋 4. Listar Todos los Productos de mi Empresa (extraído del JWT)
+### 🔐 Rol requerido: ADMIN | EMPLEADO
+GET http://localhost:8080/api/productos
 Accept: application/json
+Authorization: Bearer {{token}}
 
-### 5. Actualizar Producto ID 1 para Empresa ID 1
-PUT http://localhost:8080/api/productos/1/1
+### ---
+
+### ✏️ 5. Actualizar Producto por ID (empresa extraída del JWT)
+### 🔐 Rol requerido: ADMIN | EMPLEADO
+PUT http://localhost:8080/api/productos/1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "nombre": "Galletas Oreo 100g (Oferta)",
   "precio": 1.40,
   "cantidad": 120
 }
-
