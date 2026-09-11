@@ -2,14 +2,21 @@ package intisoft2025.practica.controller;
 
 import intisoft2025.practica.dto.empleado.LoginRequest;
 import intisoft2025.practica.dto.empleado.LoginResponse;
+import intisoft2025.practica.dto.empresa.EmpresaRequestDto;
 import intisoft2025.practica.jwt.JwtService;
 
+import intisoft2025.practica.model.Empresa;
+import intisoft2025.practica.security.CustomUserDetails;
+import intisoft2025.practica.service.implement.EmpleadoService;
+import intisoft2025.practica.service.implement.EmpresaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +49,6 @@ public class AuthController {
 
         // 2. Obtenemos el UserDetails autenticado
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
         // 3. Generamos el token JWT
         String token = jwtService.generateToken(userDetails);
 

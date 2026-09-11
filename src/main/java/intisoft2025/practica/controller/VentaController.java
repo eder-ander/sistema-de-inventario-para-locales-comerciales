@@ -25,8 +25,8 @@ public class VentaController {
     /**
      * Procesa una nueva venta.
      */
-    @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN, EMPLEADO')")
+    @PostMapping()
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLEADO')")
     public ResponseEntity<RespuestaApi<VentaResponseDTO>> crearVenta(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                                      @RequestBody VentaRequestDTO solicitud) {
         Venta venta = iVentaService.crearVenta(customUserDetails.getIdEmpresa(), customUserDetails.getDni(), solicitud);

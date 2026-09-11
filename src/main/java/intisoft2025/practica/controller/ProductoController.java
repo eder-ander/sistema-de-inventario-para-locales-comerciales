@@ -49,16 +49,17 @@ public class ProductoController {
 
     @GetMapping("/{id_producto}")
     @PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
-    public ResponseEntity<RespuestaApi<RequestProductoDto>> buscarProducto(@PathVariable Long id_empresa, @PathVariable Long id_producto){
-        RequestProductoDto buscarProducto = productoService.buscarProducto(id_empresa, id_producto);
+    public ResponseEntity<RespuestaApi<RequestProductoDto>> buscarProducto(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                                                           @PathVariable Long id_producto){
+        RequestProductoDto buscarProducto = productoService.buscarProducto(customUserDetails.getIdEmpresa(), id_producto);
         RespuestaApi<RequestProductoDto> response = new RespuestaApi<>(true, "Producto encontrado", buscarProducto);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN, EMPLEADO')")
-    public ResponseEntity<RespuestaApi<List<RequestProductoDto>>> lista(@PathVariable Long id_empresa) {
-        List<RequestProductoDto> productos = productoService.listarProductos(id_empresa);
+    @GetMapping()
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLEADO')")
+    public ResponseEntity<RespuestaApi<List<RequestProductoDto>>> lista(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        List<RequestProductoDto> productos = productoService.listarProductos(customUserDetails.getIdEmpresa());
         RespuestaApi<List<RequestProductoDto>> api = new RespuestaApi<>(true, "Lista de productos", productos);
         return ResponseEntity.ok(api);
     }

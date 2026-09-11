@@ -12,6 +12,7 @@ import lombok.Setter;
 
 public class Empleado {
     @Id
+    @Column(nullable = false, unique = true)
     private String dni;
 
     @Column(nullable = false, length = 30)
