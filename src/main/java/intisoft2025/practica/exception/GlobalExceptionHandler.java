@@ -3,6 +3,7 @@ package intisoft2025.practica.exception;
 import intisoft2025.practica.dto.common.RespuestaApi;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -61,5 +62,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<RespuestaApi<?>> handleGlobalException(Exception ex) {
         RespuestaApi<Void> response = new RespuestaApi<>(false, "Ocurrio un error interno en el servidor", null);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+    /**
+     * Maneja errores de credenciales incorrectas en el login (401).
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<RespuestaApi<?>> handleBadCredentials(BadCredentialsException ex) {
+        RespuestaApi<Void> response = new RespuestaApi<>(false, "Usuario o contraseña incorrectos", null);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 }
