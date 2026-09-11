@@ -8,12 +8,12 @@
 ### 🔐 Rol requerido: ADMIN | EMPLEADO
 POST http://localhost:8080/api/productos
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbXBsZWFkbzIiLCJpYXQiOjE3ODg4MzM1NTcsImV4cCI6MTc4ODgzNzE1N30.XqDrU3BgS85gQhsW2PX0BIcgTluj-Su9z8gEXbdNmV8
 
 {
-  "nombre": "Galletas Oreo 100g",
-  "precio": 1.50,
-  "cantidad": 100
+  "nombre": "Galletas margarita",
+  "precio": 1.00,
+  "cantidad": 10
 }
 
 ### ---
@@ -22,7 +22,7 @@ Authorization: Bearer {{token}}
 ### 🔐 Rol requerido: ADMIN | EMPLEADO
 POST http://localhost:8080/api/productos
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbXBsZWFkbzIiLCJpYXQiOjE3ODg4MzI2ODIsImV4cCI6MTc4ODgzNjI4Mn0.AVsaLg-tswgCw9x0Q8Bkbx8h6wqK0aSek4fFXx5aJpk
 
 {
   "nombre": "Gaseosa Coca Cola 500ml",
@@ -34,9 +34,9 @@ Authorization: Bearer {{token}}
 
 ### 🔍 3. Buscar Producto por ID
 ### 🔐 Rol requerido: ADMIN | EMPLEADO
-GET http://localhost:8080/api/productos/1
+GET http://localhost:8080/api/productos/2
 Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbXBsZWFkbzIiLCJpYXQiOjE3ODg4MzI2ODIsImV4cCI6MTc4ODgzNjI4Mn0.AVsaLg-tswgCw9x0Q8Bkbx8h6wqK0aSek4fFXx5aJpk
 
 ### ---
 
@@ -44,15 +44,16 @@ Authorization: Bearer {{token}}
 ### 🔐 Rol requerido: ADMIN | EMPLEADO
 GET http://localhost:8080/api/productos
 Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbXBsZWFkbzIiLCJpYXQiOjE3ODg4MzM1NTcsImV4cCI6MTc4ODgzNzE1N30.XqDrU3BgS85gQhsW2PX0BIcgTluj-Su9z8gEXbdNmV8
 
-### ---
+
+
 
 ### ✏️ 5. Actualizar Producto por ID (empresa extraída del JWT)
 ### 🔐 Rol requerido: ADMIN | EMPLEADO
 PUT http://localhost:8080/api/productos/1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbXBsZWFkbzIiLCJpYXQiOjE3ODg4MzIwMzIsImV4cCI6MTc4ODgzNTYzMn0.q6GLA1ptcgyoDELn7Wxo93CAcUCIJ439FKYt5BU_shA
 
 {
   "nombre": "Galletas Oreo 100g (Oferta)",

@@ -6,7 +6,7 @@
 ### 🔐 Rol requerido: SUPERADMIN
 POST http://localhost:8080/api/empresas
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuY2l0byIsImlhdCI6MTc4ODgzMzgxNiwiZXhwIjoxNzg4ODM3NDE2fQ.L-fO1cMeW-OH1AjEBhDEnrOH28bs1yIdcwyLeAfuE7Q
 
 {
   "nombre": "Comercial Don Pepe",
@@ -22,7 +22,7 @@ Authorization: Bearer {{token}}
 ### 🔐 Rol requerido: Cualquier usuario autenticado
 GET http://localhost:8080/api/empresas/mi-empresa
 Accept: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlbXBsZWFkbzIiLCJpYXQiOjE3ODg4MzAwNzAsImV4cCI6MTc4ODgzMzY3MH0.S54A-Wk1-W7GPIM6ezk1uJg7Ra6Cs_hKYrJsiDXft64
 
 ### ---
 
