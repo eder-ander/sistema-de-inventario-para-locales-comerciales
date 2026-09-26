@@ -127,7 +127,24 @@ El sistema tiene **3 roles** con distintos niveles de acceso:
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/empresas` | `SUPERADMIN` | Crear nueva empresa cliente |
 | `GET` | `/api/empresas/mi-empresa` | Cualquier autenticado | Ver datos de tu propia empresa (extraída del JWT) |
+| `GET` | `/api/empresas/{id_empresa}` | `SUPERADMIN` | Buscar empresa por ID |
 | `PUT` | `/api/empresas/{id_empresa}` | `SUPERADMIN` | Actualizar datos de una empresa |
+
+**Ejemplo de respuesta (`GET /api/empresas/2`):**
+```json
+{
+  "exito": true,
+  "mensaje": "Datos Empresa",
+  "datos": {
+    "id": 2,
+    "nombre": "ferreteria pepito",
+    "rubro": "ferreteria",
+    "numero_whatsapp": "789456123",
+    "correo": "ferreteria@gmail.com",
+    "direccion": "av sesquicentenario"
+  }
+}
+```
 
 ---
 
@@ -216,22 +233,22 @@ api-tests/                          # Colección de pruebas HTTP (IntelliJ / VSC
 
 ## 📐 Formato de Respuesta Estándar
 
-Todas las respuestas siguen la misma estructura:
+Todas las respuestas siguen la misma estructura (`RespuestaApi<T>`):
 
 ```json
 {
-  "success": true,
+  "exito": true,
   "mensaje": "Operación exitosa",
-  "data": { }
+  "datos": { }
 }
 ```
 
 En caso de error:
 ```json
 {
-  "success": false,
+  "exito": false,
   "mensaje": "Stock insuficiente para: Galletas Oreo",
-  "data": null
+  "datos": null
 }
 ```
 

@@ -2,6 +2,7 @@ package intisoft2025.practica.controller;
 
 import intisoft2025.practica.dto.empresa.EmpresaRequestDto;
 import intisoft2025.practica.dto.common.RespuestaApi;
+import intisoft2025.practica.dto.empresa.EmpresaResponseDto;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.security.CustomUserDetails;
 import intisoft2025.practica.service.IEmpresaService;
@@ -37,7 +38,7 @@ public class EmpresaController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails){
         EmpresaRequestDto empresa = iEmpresaService.datosEmpresa(customUserDetails.getIdEmpresa());
 
-        RespuestaApi<EmpresaRequestDto> response = new RespuestaApi<>(true, "Datos empresa", empresa);
+        RespuestaApi<EmpresaRequestDto> response = new RespuestaApi<>(true, "Datos mi empresa", empresa);
         return ResponseEntity.ok(response);
     }
 
@@ -50,6 +51,14 @@ public class EmpresaController {
         EmpresaRequestDto dto = new EmpresaRequestDto(empresaActualizada);
 
         RespuestaApi<EmpresaRequestDto> response = new RespuestaApi<>(true, "Empresa actualizada", dto);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id_empresa}")
+    @PreAuthorize("hasRole('SUPERADMIN')")
+    public ResponseEntity<RespuestaApi<EmpresaResponseDto>> buscarEmpresa(@PathVariable Long id_empresa) {
+        EmpresaResponseDto empresa = iEmpresaService.buscarEmpresa(id_empresa);
+        RespuestaApi<EmpresaResponseDto> response = new RespuestaApi<>(true, "Datos Empresa", empresa);
         return ResponseEntity.ok(response);
     }
 }
