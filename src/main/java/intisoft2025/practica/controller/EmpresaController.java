@@ -3,6 +3,7 @@ package intisoft2025.practica.controller;
 import intisoft2025.practica.dto.empresa.EmpresaRequestDto;
 import intisoft2025.practica.dto.common.RespuestaApi;
 import intisoft2025.practica.dto.empresa.EmpresaResponseDto;
+import intisoft2025.practica.dto.empresa.EmpresasResponseDto;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.security.CustomUserDetails;
 import intisoft2025.practica.service.IEmpresaService;
@@ -61,4 +62,14 @@ public class EmpresaController {
         RespuestaApi<EmpresaResponseDto> response = new RespuestaApi<>(true, "Datos Empresa", empresa);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping()
+    @PreAuthorize("hasRole('SUPERADMIN')")
+    public ResponseEntity<RespuestaApi<EmpresasResponseDto>> listarEmpresas() {
+        EmpresasResponseDto empresitas = iEmpresaService.listarEmpresas();
+        RespuestaApi<EmpresasResponseDto> response = new RespuestaApi<>(true, "Lista de Empresas", empresitas);
+        return ResponseEntity.ok(response);
+    }
+
+
 }

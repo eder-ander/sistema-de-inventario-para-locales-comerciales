@@ -2,7 +2,10 @@ package intisoft2025.practica.service;
 
 import intisoft2025.practica.dto.empresa.EmpresaRequestDto;
 import intisoft2025.practica.dto.empresa.EmpresaResponseDto;
+import intisoft2025.practica.dto.empresa.EmpresasResponseDto;
 import intisoft2025.practica.model.Empresa;
+
+import java.util.List;
 
 public interface IEmpresaService {
 
@@ -10,5 +13,5 @@ public interface IEmpresaService {
     EmpresaRequestDto datosEmpresa(Long idEmpresa);
     Empresa actualizarEmpresa(Long idEmpresa, EmpresaRequestDto empresaRequestDto);
     EmpresaResponseDto buscarEmpresa(Long idEmpresa);
-
+    EmpresasResponseDto listarEmpresas();
 }

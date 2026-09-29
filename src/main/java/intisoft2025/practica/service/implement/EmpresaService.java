@@ -2,12 +2,16 @@ package intisoft2025.practica.service.implement;
 
 import intisoft2025.practica.dto.empresa.EmpresaRequestDto;
 import intisoft2025.practica.dto.empresa.EmpresaResponseDto;
+import intisoft2025.practica.dto.empresa.EmpresasResponseDto;
 import intisoft2025.practica.exception.ResourceNotFoundException;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.repository.EmpresaRepository;
 import intisoft2025.practica.service.IEmpresaService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -59,6 +63,19 @@ public class EmpresaService implements IEmpresaService {
         Empresa empresa = empresaRepository.findById(idEmpresa)
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontro empresa con id = " + idEmpresa));
         return new EmpresaResponseDto(empresa);
+    }
+
+    @Override
+    public EmpresasResponseDto listarEmpresas() {
+        List<Empresa> empresas = empresaRepository.findAll();
+        List<EmpresaResponseDto> empresaResponseDtos = new ArrayList<>();
+
+        for(Empresa datos: empresas){
+            EmpresaResponseDto agregar = new EmpresaResponseDto(datos);
+            empresaResponseDtos.add(agregar);
+        }
+
+        return new EmpresasResponseDto(empresaResponseDtos);
     }
 }
 
