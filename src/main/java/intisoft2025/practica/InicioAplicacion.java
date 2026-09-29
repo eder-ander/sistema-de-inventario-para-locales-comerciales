@@ -31,16 +31,16 @@ public class InicioAplicacion implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+        /*
         Empresa empresa = new Empresa("empresa1","drogas","000002323","123456788","212123123123");
         empresaRepository.save(empresa);
         Empleado empleado = new Empleado(
-            "000000000",
-            "juan",
-            "perez",
+            "",
+            "",
+            "",
             "SUPERADMIN",
-            "921420759",
-            "ederander123@gmail.com",
+            "",
+            "",
             true,
             "juancito"
         );
@@ -53,5 +53,6 @@ public class InicioAplicacion implements CommandLineRunner {
 
         System.out.println(empresa);
         System.out.println(empleado);
+         */
     }
 }
