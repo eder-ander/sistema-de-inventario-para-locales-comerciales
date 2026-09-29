@@ -48,7 +48,7 @@ public class AuthController {
         );
 
         // 2. Obtenemos el UserDetails autenticado
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         // 3. Generamos el token JWT
         String token = jwtService.generateToken(userDetails);
 
@@ -58,7 +58,9 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .orElse("ROLE_USER");
 
+        Long idEmpresa = userDetails.getIdEmpresa();
+
         // 5. Retornamos la respuesta con el token
-        return ResponseEntity.ok(new LoginResponse(userDetails.getUsername(), token, rol));
+        return ResponseEntity.ok(new LoginResponse(userDetails.getUsername(), token, rol, idEmpresa ));
     }
 }

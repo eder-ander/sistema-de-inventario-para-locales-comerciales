@@ -1,4 +1,5 @@
 package intisoft2025.practica.jwt;
+import intisoft2025.practica.security.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -31,12 +32,13 @@ public class JwtService{
      * Crea un JWT firmado digitalmente con el username como "subject" (sub)
      * y le asigna fecha de emisión (issuedAt) y fecha de expiración (expiration).
      */
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(CustomUserDetails userDetails) {
         Instant now = Instant.now();
         Instant expiry = now.plusMillis(expirationMs);
 
         return Jwts.builder()
                 .subject(userDetails.getUsername())
+                .claim("idEmpresa", userDetails.getIdEmpresa())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiry))
                 .signWith(secretKey)
