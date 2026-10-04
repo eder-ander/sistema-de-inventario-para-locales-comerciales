@@ -1,5 +1,6 @@
 package intisoft2025.practica.service.implement;
 
+import intisoft2025.practica.dto.empleado.EditarEmpleadoRequestDTO;
 import intisoft2025.practica.dto.empleado.EmpleadoRequestDTO;
 import intisoft2025.practica.exception.BadRequestException;
 import intisoft2025.practica.exception.ResourceNotFoundException;
@@ -7,6 +8,7 @@ import intisoft2025.practica.model.Empleado;
 import intisoft2025.practica.model.Empresa;
 import intisoft2025.practica.repository.EmpleadoRepository;
 import intisoft2025.practica.repository.EmpresaRepository;
+import intisoft2025.practica.security.CustomUserDetails;
 import intisoft2025.practica.service.IEmpleadoService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,13 +46,24 @@ public class EmpleadoService implements IEmpleadoService {
     /**
      * Metodo para crear un empleado con entrada de Dto
      * @param empleado
-     * @param id_empresa
      * @return
      */
     @Override
-    public Empleado crearEmpleado(EmpleadoRequestDTO empleado, Long id_empresa){
-        Empresa empresa = buscarEmpresa(id_empresa);
+    public Empleado crearEmpleado(CustomUserDetails user, EmpleadoRequestDTO empleado){
+        Long idEmpresaDestino;
 
+        if("SUPERADMIN".equals(user.getRol())){
+            if(empleado.getIdEmpresaDestino() == null){
+                throw new BadRequestException("El SuperAdmin debe indicar el id empresa de destino");
+            }
+            idEmpresaDestino = empleado.getIdEmpresaDestino();
+        }else{
+            idEmpresaDestino = user.getIdEmpresa();
+            if("SUPERADMIN".equalsIgnoreCase(empleado.getRol())){
+                throw new BadRequestException("Un Admin no puede crear un Super Admin");
+            }
+        }
+        Empresa empresa = buscarEmpresa(idEmpresaDestino);
         Empleado nuevoEmpleado = new Empleado(
                 empleado.getDni(),
                 empleado.getNombres(),
@@ -62,32 +75,33 @@ public class EmpleadoService implements IEmpleadoService {
                 empleado.getUsername()
         );
 
-        // Contraseña inicial = DNI encriptado con BCrypt
+        // contraseña inicial = dnii encriptado con BCrypt
         nuevoEmpleado.setEmpresa(empresa);
         nuevoEmpleado.setPassword(passwordEncoder.encode(empleado.getDni()));
-
         return empleadoRepository.save(nuevoEmpleado);
     }
 
     /**
      * Metodo que nos sirve para editar datos de un empleado haciendo las verficaciones nesesarias.
-     * @param idEmpresa
      * @param dniEmpleado
      * @param empleado
      * @return
      */
     @Override
-    public Empleado editarDatoEmpleado(Long idEmpresa, String dniEmpleado, EmpleadoRequestDTO empleado) {
+    public Empleado editarDatoEmpleado(CustomUserDetails user, String dniEmpleado, EditarEmpleadoRequestDTO empleado) {
         //Buscar empleado
         Empleado busquedaEmpleado = empleadoRepository
                         .findById(dniEmpleado)
                         .orElseThrow(() -> new ResourceNotFoundException("No se encontro empleado con id = " + dniEmpleado));
-        //verificar si ese empleado pertenenece a esa empresa
-        if(!busquedaEmpleado.getEmpresa().getId().equals(idEmpresa)) throw new BadRequestException("No tienes acceso a esta empresa.");
+
+        if("ADMIN".equalsIgnoreCase(user.getRol())){
+            if(!user.getIdEmpresa().equals(busquedaEmpleado.getEmpresa().getId())){
+                throw new BadRequestException("Acceso Denegado: Ese empleado no pertenence a su empresa.");
+            }
+        }
 
         busquedaEmpleado.setNombre(empleado.getNombres());
         busquedaEmpleado.setApellido(empleado.getApellidos());
-        busquedaEmpleado.setRol(empleado.getRol());
         busquedaEmpleado.setNumero_whatsapp(empleado.getNumero_whatsapp());
         busquedaEmpleado.setCorreo(empleado.getCorreo());
 
@@ -96,19 +110,21 @@ public class EmpleadoService implements IEmpleadoService {
 
     /**
      * Devuelve los datos de un unico empleado.
-     * @param idEmpresa
+     * @param usuario
      * @param dniEmpleado
      * @return
      */
     @Override
     @Transactional(readOnly = true)
-    public EmpleadoRequestDTO datosEmpleado(Long idEmpresa, String dniEmpleado) {
+    public EmpleadoRequestDTO datosEmpleado(String dniEmpleado, CustomUserDetails usuario) {
         Empleado empleado = empleadoRepository
                 .findById(dniEmpleado)
-                .orElseThrow(() -> new ResourceNotFoundException("No se encontro empleado con id = " + dniEmpleado));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontro empleado con dni = " + dniEmpleado));
 
-        if (!empleado.getEmpresa().getId().equals(idEmpresa)) {
-            throw new BadRequestException("Acceso denegado: El empleado no pertenece a tu empresa");
+        if("ADMIN".equals(usuario.getRol())){
+            if(!empleado.getEmpresa().getId().equals(usuario.getIdEmpresa())){
+                throw new BadRequestException("El empleado no pertenece a tu empresa");
+            }
         }
 
         return new EmpleadoRequestDTO(empleado);

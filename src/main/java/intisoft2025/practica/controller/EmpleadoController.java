@@ -1,5 +1,6 @@
 package intisoft2025.practica.controller;
 
+import intisoft2025.practica.dto.empleado.EditarEmpleadoRequestDTO;
 import intisoft2025.practica.dto.empleado.EmpleadoRequestDTO;
 import intisoft2025.practica.dto.common.RespuestaApi;
 import intisoft2025.practica.model.Empleado;
@@ -22,17 +23,17 @@ public class EmpleadoController {
     }
 
     /**
-     * Crear un nuevo empleado para una empresa
-     * @param id_empresa
+     * Crear un nuevo empleado para una empres
      * @param dto
      */
-    @PostMapping("/{id_empresa}")
-    @PreAuthorize("hasRole('SUPERADMIN') or (hasRole('ADMIN') and authentication.principal.idEmpresa == #id_empresa)")
-    public ResponseEntity<RespuestaApi<EmpleadoRequestDTO>> crearEmpleado(
-            @PathVariable Long id_empresa,
-            @RequestBody EmpleadoRequestDTO dto) {
 
-        Empleado nuevoEmpleado = empleadoService.crearEmpleado(dto, id_empresa);
+    //corregir funcion, se ve dificil de mantener
+    @PostMapping()
+    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
+    public ResponseEntity<RespuestaApi<EmpleadoRequestDTO>> crearEmpleado(
+            @AuthenticationPrincipal CustomUserDetails usuario, @RequestBody EmpleadoRequestDTO dto) {
+
+        Empleado nuevoEmpleado = empleadoService.crearEmpleado(usuario, dto);
         EmpleadoRequestDTO responseDto = new EmpleadoRequestDTO(nuevoEmpleado);
 
         RespuestaApi<EmpleadoRequestDTO> response = new RespuestaApi<>(true, "Empleado creado con éxito", responseDto);
@@ -40,15 +41,14 @@ public class EmpleadoController {
     }
 
     /**
-     * Obtener los datos de un empleado por su DNI y empresa
+     * Obtener los datos de un empleado por su DNI
      */
     @GetMapping("/{dni}")
     @PreAuthorize("hasAnyRole('SUPERADMIN', 'ADMIN')")
     public ResponseEntity<RespuestaApi<EmpleadoRequestDTO>> datosEmpleado(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @PathVariable String dni) {
+            @PathVariable String dni, @AuthenticationPrincipal CustomUserDetails usuario) {
 
-        EmpleadoRequestDTO dto = empleadoService.datosEmpleado(customUserDetails.getIdEmpresa(), dni);
+        EmpleadoRequestDTO dto = empleadoService.datosEmpleado(dni, usuario);
 
         RespuestaApi<EmpleadoRequestDTO> response = new RespuestaApi<>(true, "Datos de empleado recuperados", dto);
         return ResponseEntity.ok(response);
@@ -60,14 +60,15 @@ public class EmpleadoController {
     @PutMapping("/{dni}")
     @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
     public ResponseEntity<RespuestaApi<EmpleadoRequestDTO>> editarEmpleado(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @AuthenticationPrincipal CustomUserDetails user,
             @PathVariable String dni,
-            @RequestBody EmpleadoRequestDTO dto) {
+            @RequestBody EditarEmpleadoRequestDTO dto) {
 
-        Empleado empleadoEditado = empleadoService.editarDatoEmpleado(customUserDetails.getIdEmpresa(), dni, dto);
+        Empleado empleadoEditado = empleadoService.editarDatoEmpleado(user, dni, dto);
         EmpleadoRequestDTO responseDto = new EmpleadoRequestDTO(empleadoEditado);
 
         RespuestaApi<EmpleadoRequestDTO> response = new RespuestaApi<>(true, "Empleado actualizado con éxito", responseDto);
         return ResponseEntity.ok(response);
     }
+
 }

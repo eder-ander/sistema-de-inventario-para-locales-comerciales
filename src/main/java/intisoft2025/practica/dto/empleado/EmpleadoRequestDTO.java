@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EmpleadoRequestDTO {
 
+    private Long idEmpresaDestino;//solo para el superadmin
     private String dni;
     private String rol;
     private String nombres;
@@ -18,6 +19,7 @@ public class EmpleadoRequestDTO {
     private String correo;
     private boolean estado_empleado;
     private String username;
+    private String nombreEmpresa;
 
     public EmpleadoRequestDTO(Empleado e) {
         this.dni = e.getDni();
@@ -28,5 +30,6 @@ public class EmpleadoRequestDTO {
         this.correo = e.getCorreo();
         this.estado_empleado = e.isEstado_empleado();
         this.username = e.getUsername();
+        this.nombreEmpresa = e.getEmpresa().getNombre();
     }
 }
