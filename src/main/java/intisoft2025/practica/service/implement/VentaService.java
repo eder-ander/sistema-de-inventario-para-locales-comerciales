@@ -34,14 +34,16 @@ public class VentaService implements IVentaService {
     @Override
     public Venta crearVenta(Long id_empresa, String dniEmpleado, VentaRequestDTO productosDto) {
 
-        Empleado empleado = empleadoRepository.findById(dniEmpleado).orElseThrow(() ->
-                new ResourceNotFoundException("No se encontro empleado con id = " + dniEmpleado));
+        Empleado empleado = empleadoRepository.findById(dniEmpleado).orElseThrow(() -> new ResourceNotFoundException("No se encontro empleado con id = " + dniEmpleado));
+
         if(!empleado.getEmpresa().getId().equals(id_empresa)){
             throw new BadRequestException("el empleado con id = " + dniEmpleado + " no pertenece a la empresa " + empleado.getEmpresa().getNombre());
         }
+
         if(productosDto == null || productosDto.getProductos() == null || productosDto.getProductos().isEmpty()){
             throw new BadRequestException("Debe de haber productos existentes.");
         }
+        //dentro VRDTO producto esta DRDTO
         for (DetalleRequestDTO id: productosDto.getProductos()){
             if (id.getProductoId() == null || id.getProductoId() <= 0){
                 throw new BadRequestException("Debe de haber un id valido");
