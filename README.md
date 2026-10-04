@@ -154,7 +154,7 @@ El sistema tiene **3 roles** con distintos niveles de acceso:
 
 | Método | Endpoint | Roles | Descripción |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/api/empleados/{id_empresa}` | `SUPERADMIN` / `ADMIN` (solo su empresa) | Crear nuevo empleado |
+| `POST` | `/api/empleados` | `SUPERADMIN` / `ADMIN` | Crear nuevo empleado |
 | `GET` | `/api/empleados/{dni}` | `SUPERADMIN` / `ADMIN` | Ver datos de un empleado (empresa extraída del JWT) |
 | `PUT` | `/api/empleados/{dni}` | `SUPERADMIN` / `ADMIN` | Editar datos de un empleado |
 
@@ -168,10 +168,10 @@ El sistema tiene **3 roles** con distintos niveles de acceso:
 
 | Método | Endpoint | Roles | Descripción |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/api/productos` | `ADMIN` / `EMPLEADO` | Crear nuevo producto |
+| `POST` | `/api/productos` | `ADMIN` | Crear nuevo producto |
 | `GET` | `/api/productos/{id_producto}` | `ADMIN` / `EMPLEADO` | Buscar producto por ID |
 | `GET` | `/api/productos` | `ADMIN` / `EMPLEADO` | Listar todos los productos de mi empresa |
-| `PUT` | `/api/productos/{id_producto}` | `ADMIN` / `EMPLEADO` | Actualizar precio, nombre o stock |
+| `PUT` | `/api/productos/{id_producto}` | `ADMIN` | Actualizar precio, nombre o stock |
 
 **Formato de precios:** Los precios usan `BigDecimal` con 2 decimales. Enviar con punto como separador decimal (ej: `12.50`).
 

@@ -24,7 +24,7 @@ public class ProductoController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RespuestaApi<RequestProductoDto>> save(@RequestBody RequestProductoDto producto,
                                                                  @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         Producto productoSave = productoService.guardarProducto(producto, customUserDetails.getIdEmpresa());
@@ -35,7 +35,7 @@ public class ProductoController {
     }
 
     @PutMapping("/{id_producto}")
-    @PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RespuestaApi<RequestProductoDto>> actualizarProducto(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                                      @PathVariable Long id_producto,
                                                                      @RequestBody RequestProductoDto producto) {
